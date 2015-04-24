@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:paddingTop="@dimen/activity_vertical_margin">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
+        android:id="@+id/welPic"
+        android:background="@drawable/spring"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
+    <TextView android:text="@string/logo" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/welEnd"
+        android:textSize="17dp"
+        android:layout_below="@id/welPic"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"/>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/songListView"
+        android:layout_below="@id/welEnd"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottomLayout"
+        android:background="#e1ffffff">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/MusicPic"
+            android:background="@drawable/music"
+            android:layout_gravity="center"
+            android:layout_weight="0.09" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.02"
+            android:text="this is a example"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/play_pause_btn"
+            android:background="@drawable/play"
+            android:layout_gravity="center"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.08"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/next_btn"
+            android:background="@drawable/next"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+</RelativeLayout>
