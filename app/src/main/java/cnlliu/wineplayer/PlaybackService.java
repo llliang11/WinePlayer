@@ -71,6 +71,7 @@ public class PlaybackService extends Service {
 
     class WinePlayer extends Binder {
         public void play(String sourceUrl) {
+            sourceUrl = musicLoader.sourceUrlGet(sourceUrl);
             winePlay(sourceUrl);
             System.out.println("play a music " + sourceUrl);
         }

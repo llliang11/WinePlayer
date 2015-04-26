@@ -5,68 +5,68 @@
 
     <ImageView
         android:layout_width="fill_parent"
-        android:layout_height="160dp"
+        android:layout_height="@dimen/image_height"
         android:id="@+id/welPic"
         android:background="@drawable/spring"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight"/>
 
     <TextView android:text="@string/logo" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/welEnd"
         android:textSize="17dp"
         android:layout_below="@id/welPic"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight"/>
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/songListView"
         android:layout_below="@id/welEnd"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp">
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight">
     </ListView>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/layout_height"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:id="@+id/bottomLayout"
         android:background="#e1ffffff">
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/image_view_width"
+            android:layout_height="@dimen/image_view_height"
             android:id="@+id/MusicPic"
             android:background="@drawable/music"
             android:layout_gravity="center"
-            android:layout_weight="0.09" />
+            android:layout_weight="@dimen/image_view_weight" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
-            android:layout_weight="1.02"
+            android:layout_weight="@dimen/text_view_weight"
             android:text="this is a example"
             android:layout_gravity="center"/>
 
         <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:id="@+id/play_pause_btn"
             android:background="@drawable/play"
             android:layout_gravity="center"/>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.08"
+            android:layout_width="@dimen/view_width"
+            android:layout_height="@dimen/view_height"
+            android:layout_weight="@dimen/view_weight"
             android:layout_gravity="center"/>
 
         <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/button_width"
+            android:layout_height="@dimen/button_height"
             android:id="@+id/next_btn"
             android:background="@drawable/next"
             android:layout_gravity="center"/>

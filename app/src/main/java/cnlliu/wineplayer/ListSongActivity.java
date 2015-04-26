@@ -26,7 +26,7 @@ public class ListSongActivity extends ActionBarActivity {
     private PlaybackService.WinePlayer winePlayer = null;
     private Button play_pause = null;
     private boolean bindServiceFlag = false;
-    private final String DEBUG = "wine player";
+    private final String DEBUG = "wine player ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,7 @@ public class ListSongActivity extends ActionBarActivity {
         musicList = musicProvider.getMusicList();
         connectPlayBackService();
         initialView();
+
     }
 
     private void initialView() {
@@ -89,37 +90,37 @@ public class ListSongActivity extends ActionBarActivity {
     }
 
     private void connectPlayBackService() {
-        serviceConnection = new ServiceConnection() {
+        if (bindServiceFlag == false) {
+            serviceConnection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
-                    winePlayer = (PlaybackService.WinePlayer)service;
-                    bindServiceFlag = true;
+                    winePlayer = (PlaybackService.WinePlayer) service;
                     System.out.println(DEBUG + "wine binder created");
                 }
 
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
                     winePlayer = null;
-                    bindServiceFlag = false;
                     System.out.println(DEBUG + "service disconnect ...");
                 }
-        };
-        Intent intent = new Intent(ListSongActivity.this, PlaybackService.class);
-        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+            };
+            Intent intent = new Intent(ListSongActivity.this, PlaybackService.class);
+            bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+            bindServiceFlag = true;
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         unbindService(serviceConnection);
+        bindServiceFlag = false;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (bindServiceFlag == false) {
-            connectPlayBackService();
-        }
+        connectPlayBackService();
     }
 
     @Override
