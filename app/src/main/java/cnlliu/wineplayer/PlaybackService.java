@@ -14,13 +14,27 @@ public class PlaybackService extends Service {
     private MusicLoader musicLoader = null;
     private MediaPlayer mediaPlayer = null;
     private boolean isPlayingFlag = false;
-    private boolean pauseFlag = false;
+    private final String DEBUG = "Play Back Service ";
 
     @Override
     public void onCreate() {
         super.onCreate();
         musicLoader = MusicLoader.instance(this.getContentResolver());
         initMediaPlayer();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.release();
+        mediaPlayer = null;
+        System.out.println(DEBUG + "service ondestroy");
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        System.out.println(DEBUG + "service onUnbind");
+        return super.onUnbind(intent);
     }
 
     @Override
@@ -34,26 +48,24 @@ public class PlaybackService extends Service {
     }
 
     private void winePlay(String url) {
-        if (pauseFlag) {
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(url);
+            mediaPlayer.prepare();
             mediaPlayer.start();
-            pauseFlag = false;
             isPlayingFlag = true;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else {
-            try {
-                mediaPlayer.setDataSource(url);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-                isPlayingFlag = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    }
+
+    private void wineResume() {
+        mediaPlayer.start();
+        isPlayingFlag = true;
     }
 
     private void winePause() {
         mediaPlayer.pause();
-        pauseFlag = true;
         isPlayingFlag = false;
     }
 
@@ -71,8 +83,10 @@ public class PlaybackService extends Service {
 
     class WinePlayer extends Binder {
         public void play(String sourceUrl) {
-            sourceUrl = musicLoader.sourceUrlGet(sourceUrl);
-            winePlay(sourceUrl);
+            if (sourceUrl != null) {
+                sourceUrl = musicLoader.sourceUrlGet(sourceUrl);
+                winePlay(sourceUrl);
+            }
             System.out.println("play a music " + sourceUrl);
         }
 
@@ -93,6 +107,9 @@ public class PlaybackService extends Service {
             return isPlayingFlag;
         }
 
+        public void resume() {
+            wineResume();
+        }
         public void playNext() {
             winePlayNext();
         }

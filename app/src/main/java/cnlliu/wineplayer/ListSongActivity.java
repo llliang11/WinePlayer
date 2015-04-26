@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -26,7 +27,8 @@ public class ListSongActivity extends ActionBarActivity {
     private PlaybackService.WinePlayer winePlayer = null;
     private Button play_pause = null;
     private boolean bindServiceFlag = false;
-    private final String DEBUG = "wine player ";
+    private String sourceUrl = null;
+    private final String DEBUG = "List Song Activity ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +50,17 @@ public class ListSongActivity extends ActionBarActivity {
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String title = (String) listview.getItemAtPosition(position);
-                    Intent intent = new Intent();
-                    intent.setClass(ListSongActivity.this, PlaybackActivity.class);
-                    startActivity(intent);
-                    winePlayer.play(title);
+                    if (winePlayer != null) {
+                        String title = (String) listview.getItemAtPosition(position);
+                        Intent intent = new Intent();
+                        intent.setClass(ListSongActivity.this, PlaybackActivity.class);
+                        startActivity(intent);
+                        winePlayer.play(title);
+                        sourceUrl = title;
+                    }
+                    else {
+                        System.out.println(DEBUG + "wine player is null");
+                    }
                 }
             });
         }
@@ -75,20 +83,35 @@ public class ListSongActivity extends ActionBarActivity {
         play_pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean isPlaing = winePlayer.isPlaying();
-                if (isPlaing) {
-                    winePlayer.pause();
-                    play_pause.setBackgroundResource(R.drawable.play);
-                }
-                else {
-                    String title = (String) listview.getItemAtPosition(0);
-                    winePlayer.play(title);
-                    play_pause.setBackgroundResource(R.drawable.pause);
+                if (winePlayer != null) {
+                    boolean isPlaing = winePlayer.isPlaying();
+                    if (isPlaing) {
+                        winePlayer.pause();
+                        play_pause.setBackgroundResource(R.drawable.play);
+                    } else {
+                        if (sourceUrl == null) {
+                            winePlayer.play((String) listview.getItemAtPosition(0));
+                        }
+                        else {
+                            winePlayer.resume();
+                        }
+                        play_pause.setBackgroundResource(R.drawable.pause);
+                    }
                 }
             }
         });
     }
 
+    private void playBtnBackSet() {
+        if (winePlayer != null) {
+            boolean isPlaing = winePlayer.isPlaying();
+            if (isPlaing) {
+                play_pause.setBackgroundResource(R.drawable.pause);
+            } else {
+                play_pause.setBackgroundResource(R.drawable.play);
+            }
+        }
+    }
     private void connectPlayBackService() {
         if (bindServiceFlag == false) {
             serviceConnection = new ServiceConnection() {
@@ -100,8 +123,7 @@ public class ListSongActivity extends ActionBarActivity {
 
                 @Override
                 public void onServiceDisconnected(ComponentName name) {
-                    winePlayer = null;
-                    System.out.println(DEBUG + "service disconnect ...");
+
                 }
             };
             Intent intent = new Intent(ListSongActivity.this, PlaybackService.class);
@@ -113,18 +135,21 @@ public class ListSongActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         unbindService(serviceConnection);
+        winePlayer = null;
         bindServiceFlag = false;
+        System.out.println(DEBUG + "on Destroy");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        connectPlayBackService();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+        //connectPlayBackService();
+        playBtnBackSet();
     }
 }

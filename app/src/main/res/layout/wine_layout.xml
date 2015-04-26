@@ -42,12 +42,12 @@
             android:id="@+id/MusicPic"
             android:background="@drawable/music"
             android:layout_gravity="center"
-            android:layout_weight="@dimen/image_view_weight" />
+            android:layout_weight="0.09"/>
 
         <TextView
             android:layout_width="@dimen/text_view_width"
             android:layout_height="wrap_content"
-            android:layout_weight="@dimen/text_view_weight"
+            android:layout_weight="1.02"
             android:text="this is a example"
             android:layout_gravity="center"/>
 
@@ -61,7 +61,7 @@
         <View
             android:layout_width="@dimen/view_width"
             android:layout_height="@dimen/view_height"
-            android:layout_weight="@dimen/view_weight"
+            android:layout_weight="0.08"
             android:layout_gravity="center"/>
 
         <Button
